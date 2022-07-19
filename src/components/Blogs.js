@@ -4,6 +4,7 @@ import React from 'react'
 const Blogs = () => {
     return (
         <div className="container">
+
             <div className="card">
                 <div className="box">
                     <div className="content">
