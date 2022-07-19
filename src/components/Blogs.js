@@ -1,53 +1,56 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import { useState, useEffect } from 'react'
+
+import axios from 'axios';
+import { Plane } from 'react-loader-spinner'
+const baseURL = 'https://qghcujpqbvrdfszremfe.supabase.co/rest/v1/blogs?select=*'
 
 const Blogs = () => {
+
+    const [blogs, setBlogs] = useState(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        axios.get(baseURL, {
+            headers: {
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnaGN1anBxYnZyZGZzenJlbWZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTgxMjk3NzcsImV4cCI6MTk3MzcwNTc3N30.LvOp9lASnuJAAwvg2VxFmnrVXuqZOM0KVngw8EKHQcM',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnaGN1anBxYnZyZGZzenJlbWZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTgxMjk3NzcsImV4cCI6MTk3MzcwNTc3N30.LvOp9lASnuJAAwvg2VxFmnrVXuqZOM0KVngw8EKHQcM'
+            }
+        }).then((response) => {
+            setBlogs(response.data)
+            setLoading(false)
+            console.log('data', response)
+        });
+    }, [])
+
+
     return (
         <div className="container">
+            {
+                loading ? <Plane
+                    height="100"
+                    width="100"
+                    color='grey'
+                    ariaLabel='loading'
+                /> :
+                    <>
+                        {
+                            blogs.map((blog, index) => {
+                                return <div className="card">
+                                    <div className="box">
+                                        <div className="content">
+                                            <h2>{index + 1}</h2>
+                                            <h3>{blog.title}</h3>
+                                            <p>{blog.description}</p>
+                                            <a href="#">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            })
+                        }
+                    </>
+            }
 
-            <div className="card">
-                <div className="box">
-                    <div className="content">
-                        <h2>01</h2>
-                        <h3>Card One</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, totam velit? Iure nemo labore inventore?</p>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
-
-            <div className="card">
-                <div className="box">
-                    <div className="content">
-                        <h2>02</h2>
-                        <h3>Card Two</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, totam velit? Iure nemo labore inventore?</p>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
-
-            <div className="card">
-                <div className="box">
-                    <div className="content">
-                        <h2>03</h2>
-                        <h3>Card Three</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, totam velit? Iure nemo labore inventore?</p>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
-
-            <div className="card">
-                <div className="box">
-                    <div className="content">
-                        <h2>04</h2>
-                        <h3>Card Three</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, totam velit? Iure nemo labore inventore?</p>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }
